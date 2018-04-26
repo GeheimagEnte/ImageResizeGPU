@@ -2,7 +2,6 @@
 import numpy as np
 import cv2 as cv
 import glob
-import threading
 from multiprocessing import Pool
 import time
 
@@ -29,7 +28,7 @@ for file in glob.glob(path+'*.JPG'):
 
 if __name__ == "__main__":
     start_time = time.time()
-    pool=Pool(96)
+    pool=Pool(16)
     pool.map(resizer, dic)
     pool.terminate()
     print("--- %s seconds ---" % (time.time() - start_time))
