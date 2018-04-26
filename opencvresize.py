@@ -4,11 +4,12 @@ import cv2 as cv
 import glob
 
 
-for file in glob.glob('/put/your/path/here/*.JPG'):
-    print(file)
-    img = cv.imread(file)
-    height, width = img.shape[:2]
-    res = cv.resize(img, ((int)(.5*width), (int)(.5*height)), interpolation=cv.INTER_CUBIC)
-    name=file.split('\\')[-1]
-    cv.imwrite('output/path/{}'.format(name), img)
+for file in glob.glob('/home/evilblubb/100EOS5D/*.JPG'):
+    img = cv.UMat(cv.imread(file))
+    
+    imgUmat = cv.UMat(img)
+    res = cv.resize(imgUmat,None, fx =0.5, fy=0.5, interpolation=cv.INTER_CUBIC)
+    name=file.split('/')[-1]
+    print(name)
+    cv.imwrite('/home/evilblubb/100EOS5D/small/{}'.format(name), res)
 
