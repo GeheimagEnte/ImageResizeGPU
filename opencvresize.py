@@ -16,7 +16,6 @@ def resizer(file):
 for file in glob.glob(path+'*.JPG'):
     dic.append(file)
 
-
 if __name__ == "__main__":
     pool=Pool(14)
     pool.map(resizer, dic)
