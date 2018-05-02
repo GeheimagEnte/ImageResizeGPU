@@ -22,7 +22,6 @@ def resizer(file):
         res = cv.resize(UMatimg, (int(width), int(height)), interpolation=cv.INTER_CUBIC)
     name=file.split('/')[-1]
     cv.imwrite('/home/evilblubb/100EOS5D/small/{}'.format(name), res)
-
 if __name__ == "__main__":
     pool=Pool(16)
     pool.map(resizer, dic)
