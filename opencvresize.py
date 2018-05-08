@@ -7,6 +7,7 @@ import time
 import argparse
 import piexif
 
+
 def resizer(params):
     file = params['input']
     outFile = params['output']
@@ -41,12 +42,16 @@ if __name__ == "__main__":
     if (not path.isdir(args.input)):
         print("Input path '{}' does not exist".format(args.input))
     else:
+        if args.quality < 80:
+            proceed = input("ACHTUNG: Qualität unter 80%. Fortfahren? [j/N]")
+            if not proceed in ['j', 'J', 'y', 'Y']:
+                raise SystemExit
         pool = Pool(args.threads)
         params = []
         inFiles = glob.glob(path.join(args.input, '**', '*.JPG'), recursive=True)
         for file in inFiles:
             outFile = path.join(args.output, path.relpath(file, start=args.input))
-            if (not path.isdir(path.dirname(outFile))):
+            if not path.isdir(path.dirname(outFile)):
                 makedirs(path.dirname(outFile))
             params.append(dict(input=file, output=outFile, longside=args.longside, quality=args.quality))
         start_time = time.time()
