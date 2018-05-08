@@ -35,7 +35,7 @@ if __name__ == "__main__":
     parser.add_argument("-t", "--threads", help="Number of concurrent resize threads. Default: 8", type=int, default=8)
     parser.add_argument("-l", "--longside", type=int, default=4000,
                         help="Number of pixels along the long side. The short side will be resized accordingly with the same factor. Default: 4000")
-    parser.add_argument("-q", "--quality", help="JPEG image quality. Default: 80", type=int, default=90)
+    parser.add_argument("-q", "--quality", help="JPEG image quality. Default: 90", type=int, default=90)
     args = parser.parse_args()
 
     if (not path.isdir(args.input)):
