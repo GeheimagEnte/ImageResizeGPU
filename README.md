@@ -1,15 +1,15 @@
 # ImageResizeGPU
-##Usage 
+## Usage 
 
     opencvresize.py [-h] [-t THREADS] [-l LONGSIDE] [-q QUALITY] [-i {0,1,2,3,4,7}] input output
 
 Resize all images in given input Folder.
 
-##Positional arguments
+## Positional arguments
   input                 Input folder, i.e. originals folder.
   output                Output folder, where the resized images are stored.
 
-##Optional arguments
+## Optional arguments
 1.  **-h, --help**
     : show this help message and exit
   
@@ -35,6 +35,6 @@ Resize all images in given input Folder.
     Default: 2: Cubic
                         
                         
-##Needed packages
+## Needed packages
 - opencv-python
 - piexif
