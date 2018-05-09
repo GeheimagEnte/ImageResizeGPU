@@ -14,9 +14,12 @@ def resizer(params):
     file = params['input']
     outFile = params['output']
     longside = params['longside']
-    size = path.getsize(file)
-    if size == 0:
+    if path.getsize(file) == 0:
         fileLog = 'File broken: {}'.format(file)
+        print(fileLog)
+        return '{}\n'.format(fileLog)
+    if not params['restart'] and path.isfile(outFile):
+        fileLog = 'Skip existing file: {}'.format(outFile)
         print(fileLog)
         return '{}\n'.format(fileLog)
     img = cv.imread(file, cv.IMREAD_ANYCOLOR)
@@ -55,6 +58,7 @@ if __name__ == "__main__":
                              "8x8 neighborhood\n7: Max - mask for interpolation codes\n"
                              "Default: 2: Cubic",
                         default=cv.INTER_CUBIC)
+    parser.add_argument("-r", "--restart", action='store_true', default=False, help="Skip existing files.")
     args = parser.parse_args()
 
     if (not path.isdir(args.input)):
@@ -62,7 +66,7 @@ if __name__ == "__main__":
     else:
         if args.quality < 80:
             proceed = input("WARNING: Quality below 80%. Continue? [j,y/N]")
-            if not proceed in ['j', 'J', 'y', 'Y']:
+            if proceed not in ['j', 'J', 'y', 'Y']:
                 raise SystemExit
         pool = Pool(args.threads)
         params = []
@@ -72,7 +76,7 @@ if __name__ == "__main__":
             if not path.isdir(path.dirname(outFile)):
                 makedirs(path.dirname(outFile))
             params.append(dict(input=file, output=outFile, longside=args.longside, quality=args.quality,
-                               interpolation=args.interpolation))
+                               interpolation=args.interpolation, restart=args.restart))
         start_time = time.time()
         log = pool.map(resizer, params)
         timeText = "--- %s seconds ---" % (time.time() - start_time)

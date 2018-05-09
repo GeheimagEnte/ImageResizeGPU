@@ -33,6 +33,9 @@ Resize all images in given input Folder.
     - 7: Max - mask for interpolation codes
     
     Default: 2: Cubic
+    
+-    **-r, --restart**
+     : Skip existing files.
                         
                         
 ## Needed packages
