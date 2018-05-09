@@ -38,7 +38,7 @@ def resizer(params):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Resize all images in given Folder.",
+    parser = argparse.ArgumentParser(description="Resize all images in given input Folder.",
                                      formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument("input", help="Input folder, i.e. originals folder.")
     parser.add_argument("output", help="Output folder, where the resized images are stored.")
