@@ -77,7 +77,7 @@ if __name__ == "__main__":
         log = pool.map(resizer, params)
         timeText = "--- %s seconds ---" % (time.time() - start_time)
         print(timeText)
-        with open(path.join(args.output, 'logfile.txt'), 'w+') as logFile:
+        with open(path.join(args.output, 'resizeLog.txt'), 'w+') as logFile:
             logFile.write("Used parameters:\n{}\n\n".format(
                 json.dumps(vars(args), sort_keys=False, indent=4, separators=(',', ': '))))
             logFile.write('{}\n'.format(timeText))
