@@ -1,10 +1,11 @@
 #!/usr/bin/python
-from os import path, makedirs
-import cv2 as cv
-import glob
-from multiprocessing import Pool
-import time
 import argparse
+import glob
+import time
+from multiprocessing import Pool
+from os import path, makedirs
+
+import cv2 as cv
 import piexif
 
 
@@ -12,6 +13,11 @@ def resizer(params):
     file = params['input']
     outFile = params['output']
     longside = params['longside']
+    size = path.getsize(file)
+    if size == 0:
+        fileLog = 'File broken: {}'.format(file)
+        print(fileLog)
+        return '{}\n'.format(fileLog)
     img = cv.imread(file, cv.IMREAD_ANYCOLOR)
     height, width = img.shape[:2]
     dim = float(width) / float(height)
@@ -27,6 +33,7 @@ def resizer(params):
     if piexif.ImageIFD.Orientation in exif_dict["0th"]:
         exif_dict["0th"][piexif.ImageIFD.Orientation] = 0
         piexif.insert(piexif.dump(exif_dict), outFile)
+    return ''
 
 
 if __name__ == "__main__":
@@ -43,7 +50,7 @@ if __name__ == "__main__":
         print("Input path '{}' does not exist".format(args.input))
     else:
         if args.quality < 80:
-            proceed = input("ACHTUNG: Qualität unter 80%. Fortfahren? [j/N]")
+            proceed = input("WARNING: Quality below 80%. Continue? [j,y/N]")
             if not proceed in ['j', 'J', 'y', 'Y']:
                 raise SystemExit
         pool = Pool(args.threads)
@@ -55,6 +62,7 @@ if __name__ == "__main__":
                 makedirs(path.dirname(outFile))
             params.append(dict(input=file, output=outFile, longside=args.longside, quality=args.quality))
         start_time = time.time()
-        pool.map(resizer, params)
-        pool.terminate()
+        log = pool.map(resizer, params)
+        with open(path.join(args.output, 'logfile.txt'), 'w+') as logFile:
+            logFile.writelines(log)
         print("--- %s seconds ---" % (time.time() - start_time))
