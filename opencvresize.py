@@ -49,7 +49,7 @@ if __name__ == "__main__":
     parser.add_argument("-l", "--longside", type=int, default=4000,
                         help="Number of pixels along the long side. The short side will be resized accordingly with the same factor. Default: 4000")
     parser.add_argument("-q", "--quality", help="JPEG image quality. Default: 90", type=int, default=90)
-    parser.add_argument("-i", "--interpolation", choices=['0', '1', '2', '3', '4', '7'],
+    parser.add_argument("-i", "--interpolation", choices=[0, 1, 2, 3, 4, 7], type=int,
                         help="Interpolation method for resizing.\n0: Nearest - nearest neighbor interpolation\n1: "
                              "Linear - bilinear interpolation \n2: Cubic - bicubic interpolation\n3: Area - "
                              "resampling using pixel area relation. It may be a preferred method for image "
