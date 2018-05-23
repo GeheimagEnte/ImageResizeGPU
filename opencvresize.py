@@ -14,30 +14,38 @@ def resizer(params):
     file = params['input']
     outFile = params['output']
     longside = params['longside']
-    if path.getsize(file) == 0:
+    try:
+        if path.getsize(file) == 0:
+            raise FileNotFoundError
+        if not params['restart'] and path.isfile(outFile):
+            raise FileExistsError
+        img = cv.imread(file, cv.IMREAD_ANYCOLOR)
+        height, width = img.shape[:2]
+        dim = float(width) / float(height)
+        if dim > 1:
+            width = longside
+            height = longside / dim
+        else:
+            width = longside * dim
+            height = longside
+        res = cv.resize(img, (int(width), int(height)), interpolation=params['interpolation'])
+        cv.imwrite(outFile, res, [cv.IMWRITE_JPEG_QUALITY, params['quality']])
+        exif_dict = piexif.load(file)
+        if piexif.ImageIFD.Orientation in exif_dict["0th"]:
+            exif_dict["0th"][piexif.ImageIFD.Orientation] = 0
+            piexif.insert(piexif.dump(exif_dict), outFile)
+        fileLog = "Image resized: {}".format(file)
+    except FileNotFoundError:
         fileLog = 'File broken: {}'.format(file)
-        print(fileLog)
-        return '{}\n'.format(fileLog)
-    if not params['restart'] and path.isfile(outFile):
+    except FileExistsError:
         fileLog = 'Skip existing file: {}'.format(outFile)
+    except AttributeError:
+        fileLog = 'Attribute Error for file: {}'.format(file)
+    except:
+        fileLog = 'Unknown Error for file: {}'.format(file)
+    finally:
         print(fileLog)
         return '{}\n'.format(fileLog)
-    img = cv.imread(file, cv.IMREAD_ANYCOLOR)
-    height, width = img.shape[:2]
-    dim = float(width) / float(height)
-    if dim > 1:
-        width = longside
-        height = longside / dim
-    else:
-        width = longside * dim
-        height = longside
-    res = cv.resize(img, (int(width), int(height)), interpolation=params['interpolation'])
-    cv.imwrite(outFile, res, [cv.IMWRITE_JPEG_QUALITY, params['quality']])
-    exif_dict = piexif.load(file)
-    if piexif.ImageIFD.Orientation in exif_dict["0th"]:
-        exif_dict["0th"][piexif.ImageIFD.Orientation] = 0
-        piexif.insert(piexif.dump(exif_dict), outFile)
-    return ''
 
 
 if __name__ == "__main__":
