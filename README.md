@@ -1,4 +1,4 @@
-# ImageResizeGPU
+# ImageResizeOpenCV
 ## Usage 
 
     opencvresize.py [-h] [-t THREADS] [-l LONGSIDE] [-q QUALITY] [-i {0,1,2,3,4,7}] input output
