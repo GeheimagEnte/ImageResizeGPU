@@ -33,7 +33,7 @@ def resizer(params):
         exif_dict = piexif.load(file)
         if piexif.ImageIFD.Orientation in exif_dict["0th"]:
             exif_dict["0th"][piexif.ImageIFD.Orientation] = 0
-            piexif.insert(piexif.dump(exif_dict), outFile)
+        piexif.insert(piexif.dump(exif_dict), outFile)
         fileLog = "Image resized: {}".format(file)
     except FileNotFoundError:
         fileLog = 'File broken: {}'.format(file)
