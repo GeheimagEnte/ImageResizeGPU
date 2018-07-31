@@ -64,8 +64,8 @@ if __name__ == "__main__":
                              "decimation, as it gives moire'-free results.\n   But when the image is zoomed, "
                              "it is similar to the INTER_NEAREST method.\n4: Lanczos4 - Lanczos interpolation over "
                              "8x8 neighborhood\n7: Max - mask for interpolation codes\n"
-                             "Default: 2: Cubic",
-                        default=cv.INTER_CUBIC)
+                             "Default: 3: Area",
+                        default=cv.INTER_AREA)
     parser.add_argument("-r", "--restart", action='store_true', default=False, help="Skip existing files.")
     args = parser.parse_args()
 
